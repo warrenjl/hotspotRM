@@ -11,55 +11,187 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// rcpparma_hello_world
-arma::mat rcpparma_hello_world();
-RcppExport SEXP _hotspotRM_rcpparma_hello_world() {
+// Sigma_inv_update
+arma::mat Sigma_inv_update(int c, int d, Rcpp::List v_design_list, arma::mat beta, arma::vec gamma_long, arma::mat Q, arma::mat Sigma_inv_scale_inv, double Sigma_inv_df);
+RcppExport SEXP _hotspotRM_Sigma_inv_update(SEXP cSEXP, SEXP dSEXP, SEXP v_design_listSEXP, SEXP betaSEXP, SEXP gamma_longSEXP, SEXP QSEXP, SEXP Sigma_inv_scale_invSEXP, SEXP Sigma_inv_dfSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(rcpparma_hello_world());
+    Rcpp::traits::input_parameter< int >::type c(cSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type v_design_list(v_design_listSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type gamma_long(gamma_longSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Q(QSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Sigma_inv_scale_inv(Sigma_inv_scale_invSEXP);
+    Rcpp::traits::input_parameter< double >::type Sigma_inv_df(Sigma_inv_dfSEXP);
+    rcpp_result_gen = Rcpp::wrap(Sigma_inv_update(c, d, v_design_list, beta, gamma_long, Q, Sigma_inv_scale_inv, Sigma_inv_df));
     return rcpp_result_gen;
 END_RCPP
 }
-// rcpparma_outerproduct
-arma::mat rcpparma_outerproduct(const arma::colvec& x);
-RcppExport SEXP _hotspotRM_rcpparma_outerproduct(SEXP xSEXP) {
+// alpha_update
+arma::vec alpha_update(arma::mat x, int sum_n, arma::vec kappa, arma::vec omega, arma::vec beta, arma::vec log_sum_exp, arma::mat alpha_prior_cov_inv);
+RcppExport SEXP _hotspotRM_alpha_update(SEXP xSEXP, SEXP sum_nSEXP, SEXP kappaSEXP, SEXP omegaSEXP, SEXP betaSEXP, SEXP log_sum_expSEXP, SEXP alpha_prior_cov_invSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpparma_outerproduct(x));
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type sum_n(sum_nSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type kappa(kappaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type omega(omegaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type log_sum_exp(log_sum_expSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type alpha_prior_cov_inv(alpha_prior_cov_invSEXP);
+    rcpp_result_gen = Rcpp::wrap(alpha_update(x, sum_n, kappa, omega, beta, log_sum_exp, alpha_prior_cov_inv));
     return rcpp_result_gen;
 END_RCPP
 }
-// rcpparma_innerproduct
-double rcpparma_innerproduct(const arma::colvec& x);
-RcppExport SEXP _hotspotRM_rcpparma_innerproduct(SEXP xSEXP) {
+// beta_update
+arma::vec beta_update(arma::mat x, arma::vec R, int c, int sum_n, int sum_R, arma::vec kappa, arma::vec omega, arma::mat beta, arma::vec alpha, arma::mat Sigma_inv_old, double rho_old, arma::vec log_sum_exp, arma::mat beta_prior_mean_mat, arma::vec beta_prior_mean_vec);
+RcppExport SEXP _hotspotRM_beta_update(SEXP xSEXP, SEXP RSEXP, SEXP cSEXP, SEXP sum_nSEXP, SEXP sum_RSEXP, SEXP kappaSEXP, SEXP omegaSEXP, SEXP betaSEXP, SEXP alphaSEXP, SEXP Sigma_inv_oldSEXP, SEXP rho_oldSEXP, SEXP log_sum_expSEXP, SEXP beta_prior_mean_matSEXP, SEXP beta_prior_mean_vecSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpparma_innerproduct(x));
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type R(RSEXP);
+    Rcpp::traits::input_parameter< int >::type c(cSEXP);
+    Rcpp::traits::input_parameter< int >::type sum_n(sum_nSEXP);
+    Rcpp::traits::input_parameter< int >::type sum_R(sum_RSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type kappa(kappaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type omega(omegaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Sigma_inv_old(Sigma_inv_oldSEXP);
+    Rcpp::traits::input_parameter< double >::type rho_old(rho_oldSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type log_sum_exp(log_sum_expSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type beta_prior_mean_mat(beta_prior_mean_matSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type beta_prior_mean_vec(beta_prior_mean_vecSEXP);
+    rcpp_result_gen = Rcpp::wrap(beta_update(x, R, c, sum_n, sum_R, kappa, omega, beta, alpha, Sigma_inv_old, rho_old, log_sum_exp, beta_prior_mean_mat, beta_prior_mean_vec));
     return rcpp_result_gen;
 END_RCPP
 }
-// rcpparma_bothproducts
-Rcpp::List rcpparma_bothproducts(const arma::colvec& x);
-RcppExport SEXP _hotspotRM_rcpparma_bothproducts(SEXP xSEXP) {
+// gamma_update
+Rcpp::List gamma_update(arma::mat v_design, int c, int p_v, arma::mat Sigma_inv_old, arma::mat beta, arma::mat Q, arma::mat gamma_prior_cov_inv);
+RcppExport SEXP _hotspotRM_gamma_update(SEXP v_designSEXP, SEXP cSEXP, SEXP p_vSEXP, SEXP Sigma_inv_oldSEXP, SEXP betaSEXP, SEXP QSEXP, SEXP gamma_prior_cov_invSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpparma_bothproducts(x));
+    Rcpp::traits::input_parameter< arma::mat >::type v_design(v_designSEXP);
+    Rcpp::traits::input_parameter< int >::type c(cSEXP);
+    Rcpp::traits::input_parameter< int >::type p_v(p_vSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Sigma_inv_old(Sigma_inv_oldSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Q(QSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type gamma_prior_cov_inv(gamma_prior_cov_invSEXP);
+    rcpp_result_gen = Rcpp::wrap(gamma_update(v_design, c, p_v, Sigma_inv_old, beta, Q, gamma_prior_cov_inv));
+    return rcpp_result_gen;
+END_RCPP
+}
+// hotspotRM
+Rcpp::List hotspotRM(int mcmc_samples, arma::mat z, arma::vec n, arma::vec m, arma::mat v, arma::mat R, double metrop_sd_rho_trans, Rcpp::Nullable<double> sigma2_gamma_prior, Rcpp::Nullable<double> a_sigma2_prior, Rcpp::Nullable<double> b_sigma2_prior, Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior, Rcpp::Nullable<double> Sigma_inv_df_prior, Rcpp::Nullable<arma::mat> beta_init, Rcpp::Nullable<arma::mat> gamma_init, Rcpp::Nullable<arma::mat> alpha_init, Rcpp::Nullable<arma::vec> sigma2_init, Rcpp::Nullable<arma::mat> Sigma_inv_init, Rcpp::Nullable<double> rho_init);
+RcppExport SEXP _hotspotRM_hotspotRM(SEXP mcmc_samplesSEXP, SEXP zSEXP, SEXP nSEXP, SEXP mSEXP, SEXP vSEXP, SEXP RSEXP, SEXP metrop_sd_rho_transSEXP, SEXP sigma2_gamma_priorSEXP, SEXP a_sigma2_priorSEXP, SEXP b_sigma2_priorSEXP, SEXP Sigma_inv_scale_priorSEXP, SEXP Sigma_inv_df_priorSEXP, SEXP beta_initSEXP, SEXP gamma_initSEXP, SEXP alpha_initSEXP, SEXP sigma2_initSEXP, SEXP Sigma_inv_initSEXP, SEXP rho_initSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type mcmc_samples(mcmc_samplesSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type z(zSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type n(nSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type m(mSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type v(vSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type R(RSEXP);
+    Rcpp::traits::input_parameter< double >::type metrop_sd_rho_trans(metrop_sd_rho_transSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<double> >::type sigma2_gamma_prior(sigma2_gamma_priorSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<double> >::type a_sigma2_prior(a_sigma2_priorSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<double> >::type b_sigma2_prior(b_sigma2_priorSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<arma::mat> >::type Sigma_inv_scale_prior(Sigma_inv_scale_priorSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<double> >::type Sigma_inv_df_prior(Sigma_inv_df_priorSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<arma::mat> >::type beta_init(beta_initSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<arma::mat> >::type gamma_init(gamma_initSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<arma::mat> >::type alpha_init(alpha_initSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<arma::vec> >::type sigma2_init(sigma2_initSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<arma::mat> >::type Sigma_inv_init(Sigma_inv_initSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<double> >::type rho_init(rho_initSEXP);
+    rcpp_result_gen = Rcpp::wrap(hotspotRM(mcmc_samples, z, n, m, v, R, metrop_sd_rho_trans, sigma2_gamma_prior, a_sigma2_prior, b_sigma2_prior, Sigma_inv_scale_prior, Sigma_inv_df_prior, beta_init, gamma_init, alpha_init, sigma2_init, Sigma_inv_init, rho_init));
+    return rcpp_result_gen;
+END_RCPP
+}
+// omega_update
+arma::vec omega_update(arma::mat x, arma::vec m, int sum_n, arma::vec beta, arma::vec alpha, arma::vec log_sum_exp);
+RcppExport SEXP _hotspotRM_omega_update(SEXP xSEXP, SEXP mSEXP, SEXP sum_nSEXP, SEXP betaSEXP, SEXP alphaSEXP, SEXP log_sum_expSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type m(mSEXP);
+    Rcpp::traits::input_parameter< int >::type sum_n(sum_nSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type log_sum_exp(log_sum_expSEXP);
+    rcpp_result_gen = Rcpp::wrap(omega_update(x, m, sum_n, beta, alpha, log_sum_exp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_pgdraw
+arma::vec rcpp_pgdraw(arma::vec b, arma::vec c);
+RcppExport SEXP _hotspotRM_rcpp_pgdraw(SEXP bSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type b(bSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_pgdraw(b, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rho_update
+Rcpp::List rho_update(int c, int d, arma::mat R, arma::mat beta, arma::mat Sigma_inv, double rho_old, arma::mat Q, double log_deter, arma::mat beta_prior_mean_mat, double metrop_sd_rho_trans, int acctot_rho_trans);
+RcppExport SEXP _hotspotRM_rho_update(SEXP cSEXP, SEXP dSEXP, SEXP RSEXP, SEXP betaSEXP, SEXP Sigma_invSEXP, SEXP rho_oldSEXP, SEXP QSEXP, SEXP log_deterSEXP, SEXP beta_prior_mean_matSEXP, SEXP metrop_sd_rho_transSEXP, SEXP acctot_rho_transSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type c(cSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type R(RSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Sigma_inv(Sigma_invSEXP);
+    Rcpp::traits::input_parameter< double >::type rho_old(rho_oldSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Q(QSEXP);
+    Rcpp::traits::input_parameter< double >::type log_deter(log_deterSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type beta_prior_mean_mat(beta_prior_mean_matSEXP);
+    Rcpp::traits::input_parameter< double >::type metrop_sd_rho_trans(metrop_sd_rho_transSEXP);
+    Rcpp::traits::input_parameter< int >::type acctot_rho_trans(acctot_rho_transSEXP);
+    rcpp_result_gen = Rcpp::wrap(rho_update(c, d, R, beta, Sigma_inv, rho_old, Q, log_deter, beta_prior_mean_mat, metrop_sd_rho_trans, acctot_rho_trans));
+    return rcpp_result_gen;
+END_RCPP
+}
+// sigma2_update
+double sigma2_update(int k, int counter, int n, int d, arma::mat alpha, double shape_update, double b_sigma2);
+RcppExport SEXP _hotspotRM_sigma2_update(SEXP kSEXP, SEXP counterSEXP, SEXP nSEXP, SEXP dSEXP, SEXP alphaSEXP, SEXP shape_updateSEXP, SEXP b_sigma2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type k(kSEXP);
+    Rcpp::traits::input_parameter< int >::type counter(counterSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< double >::type shape_update(shape_updateSEXP);
+    Rcpp::traits::input_parameter< double >::type b_sigma2(b_sigma2SEXP);
+    rcpp_result_gen = Rcpp::wrap(sigma2_update(k, counter, n, d, alpha, shape_update, b_sigma2));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_hotspotRM_rcpparma_hello_world", (DL_FUNC) &_hotspotRM_rcpparma_hello_world, 0},
-    {"_hotspotRM_rcpparma_outerproduct", (DL_FUNC) &_hotspotRM_rcpparma_outerproduct, 1},
-    {"_hotspotRM_rcpparma_innerproduct", (DL_FUNC) &_hotspotRM_rcpparma_innerproduct, 1},
-    {"_hotspotRM_rcpparma_bothproducts", (DL_FUNC) &_hotspotRM_rcpparma_bothproducts, 1},
+    {"_hotspotRM_Sigma_inv_update", (DL_FUNC) &_hotspotRM_Sigma_inv_update, 8},
+    {"_hotspotRM_alpha_update", (DL_FUNC) &_hotspotRM_alpha_update, 7},
+    {"_hotspotRM_beta_update", (DL_FUNC) &_hotspotRM_beta_update, 14},
+    {"_hotspotRM_gamma_update", (DL_FUNC) &_hotspotRM_gamma_update, 7},
+    {"_hotspotRM_hotspotRM", (DL_FUNC) &_hotspotRM_hotspotRM, 18},
+    {"_hotspotRM_omega_update", (DL_FUNC) &_hotspotRM_omega_update, 6},
+    {"_hotspotRM_rcpp_pgdraw", (DL_FUNC) &_hotspotRM_rcpp_pgdraw, 2},
+    {"_hotspotRM_rho_update", (DL_FUNC) &_hotspotRM_rho_update, 11},
+    {"_hotspotRM_sigma2_update", (DL_FUNC) &_hotspotRM_sigma2_update, 7},
     {NULL, NULL, 0}
 };
 
