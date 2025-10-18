@@ -242,14 +242,6 @@ for(int j = 1; j < mcmc_samples; ++j){
                           alpha.col(k);
       
       }
-   //for(int k = 0; k < c; ++k){
-   //   beta.slice(j).row(k) = beta.slice(j).row(k) + 
-   //                          -mean(beta.slice(j).row(k));
-   //   }
-   //for(int k = 0; k < (d-1); ++k){
-   //   temp_mat.col(k+1) = x*beta.slice(j).col(k) + 
-   //                       alpha.col(k);
-   //   }
    
    //gamma
    Rcpp::List gamma_output = gamma_update(v_design,
