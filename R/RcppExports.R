@@ -13,16 +13,16 @@ beta_update <- function(x, R, c, sum_n, sum_R, kappa, omega, beta, alpha, Sigma_
     .Call(`_hotspotRM_beta_update`, x, R, c, sum_n, sum_R, kappa, omega, beta, alpha, Sigma_inv_old, rho_old, log_sum_exp, beta_prior_mean_mat, beta_prior_mean_vec)
 }
 
-gamma_update <- function(v_design, c, p_v, Sigma_inv_old, beta, Q, gamma_prior_cov_inv) {
-    .Call(`_hotspotRM_gamma_update`, v_design, c, p_v, Sigma_inv_old, beta, Q, gamma_prior_cov_inv)
+gamma_update <- function(v_design, c, p_v, beta, Sigma_inv_old, Q, gamma_prior_cov_inv) {
+    .Call(`_hotspotRM_gamma_update`, v_design, c, p_v, beta, Sigma_inv_old, Q, gamma_prior_cov_inv)
 }
 
 hotspotRM <- function(mcmc_samples, z, n, m, v, R, metrop_sd_rho_trans, sigma2_gamma_prior = NULL, a_sigma2_prior = NULL, b_sigma2_prior = NULL, Sigma_inv_scale_prior = NULL, Sigma_inv_df_prior = NULL, beta_init = NULL, gamma_init = NULL, alpha_init = NULL, sigma2_init = NULL, Sigma_inv_init = NULL, rho_init = NULL) {
     .Call(`_hotspotRM_hotspotRM`, mcmc_samples, z, n, m, v, R, metrop_sd_rho_trans, sigma2_gamma_prior, a_sigma2_prior, b_sigma2_prior, Sigma_inv_scale_prior, Sigma_inv_df_prior, beta_init, gamma_init, alpha_init, sigma2_init, Sigma_inv_init, rho_init)
 }
 
-omega_update <- function(x, m, sum_n, beta, alpha, log_sum_exp) {
-    .Call(`_hotspotRM_omega_update`, x, m, sum_n, beta, alpha, log_sum_exp)
+omega_update <- function(x, m, beta, alpha, log_sum_exp) {
+    .Call(`_hotspotRM_omega_update`, x, m, beta, alpha, log_sum_exp)
 }
 
 rcpp_pgdraw <- function(b, c) {

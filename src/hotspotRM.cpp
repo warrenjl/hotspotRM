@@ -210,7 +210,6 @@ for(int j = 1; j < mcmc_samples; ++j){
       //omega
       omega.col(k) = omega_update(x,
                                   m,
-                                  sum_n,
                                   beta.slice(j).col(k),
                                   alpha.col(k),
                                   log_sum_exp);
@@ -243,13 +242,21 @@ for(int j = 1; j < mcmc_samples; ++j){
                           alpha.col(k);
       
       }
+   //for(int k = 0; k < c; ++k){
+   //   beta.slice(j).row(k) = beta.slice(j).row(k) + 
+   //                          -mean(beta.slice(j).row(k));
+   //   }
+   //for(int k = 0; k < (d-1); ++k){
+   //   temp_mat.col(k+1) = x*beta.slice(j).col(k) + 
+   //                       alpha.col(k);
+   //   }
    
    //gamma
    Rcpp::List gamma_output = gamma_update(v_design,
                                           c,
                                           p_v,
-                                          Sigma_inv.slice(j-1),
                                           beta.slice(j),
+                                          Sigma_inv.slice(j-1),
                                           Q,
                                           gamma_prior_cov_inv);
    gamma.slice(j) = Rcpp::as<arma::mat>(gamma_output[0]);
@@ -278,12 +285,12 @@ for(int j = 1; j < mcmc_samples; ++j){
    arma::vec diag_vals;                     
    for(int k = 0; k < c; ++k){
      
-     arma::vec rep_block(n(k), arma::fill::value(1.00/sigma2_col(k)));
-     diag_vals = arma::join_cols(diag_vals, rep_block);
+      arma::vec rep_block(n(k), arma::fill::value(1.00/sigma2_col(k)));
+      diag_vals = arma::join_cols(diag_vals, rep_block);
      
-     }
-   arma::mat alpha_prior_cov_inv = arma::diagmat(diag_vals);
-    
+      }
+   alpha_prior_cov_inv = arma::diagmat(diag_vals);
+   
    //Sigma_inv
    Sigma_inv.slice(j) = Sigma_inv_update(c,
                                          d,

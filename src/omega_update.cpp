@@ -8,7 +8,6 @@ using namespace Rcpp;
 
 arma::vec omega_update(arma::mat x,
                        arma::vec m,
-                       int sum_n,
                        arma::vec beta,
                        arma::vec alpha,
                        arma::vec log_sum_exp){

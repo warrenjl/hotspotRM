@@ -9,8 +9,8 @@ using namespace Rcpp;
 Rcpp::List gamma_update(arma::mat v_design,
                         int c,
                         int p_v,
-                        arma::mat Sigma_inv_old,
                         arma::mat beta,
+                        arma::mat Sigma_inv_old,
                         arma::mat Q,
                         arma::mat gamma_prior_cov_inv){
   

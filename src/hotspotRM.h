@@ -6,7 +6,6 @@ arma::vec rcpp_pgdraw(arma::vec b,
 
 arma::vec omega_update(arma::mat x,
                        arma::vec m,
-                       int sum_n,
                        arma::vec beta,
                        arma::vec alpha,
                        arma::vec log_sum_exp);
@@ -37,8 +36,8 @@ arma::vec alpha_update(arma::mat x,
 Rcpp::List gamma_update(arma::mat v_design,
                         int c,
                         int p_v,
-                        arma::mat Sigma_inv_old,
                         arma::mat beta,
+                        arma::mat Sigma_inv_old,
                         arma::mat Q,
                         arma::mat gamma_prior_cov_inv);
 
