@@ -70,6 +70,21 @@ Rcpp::List rho_update(int c,
                       double metrop_sd_rho_trans,
                       int acctot_rho_trans);
 
+Rcpp::List hotspotRM1(int mcmc_samples,
+                      arma::mat z,
+                      arma::vec n,
+                      arma::vec m,
+                      arma::mat v,
+                      arma::mat R,
+                      double metrop_sd_rho_trans,
+                      Rcpp::Nullable<double> sigma2_gamma_prior,
+                      Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior,
+                      Rcpp::Nullable<double> Sigma_inv_df_prior,
+                      Rcpp::Nullable<arma::mat> beta_init,
+                      Rcpp::Nullable<arma::mat> gamma_init,
+                      Rcpp::Nullable<arma::mat> Sigma_inv_init,
+                      Rcpp::Nullable<double> rho_init);
+  
 Rcpp::List hotspotRM(int mcmc_samples,
                      arma::mat z,
                      arma::vec n,

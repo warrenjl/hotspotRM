@@ -21,6 +21,10 @@ hotspotRM <- function(mcmc_samples, z, n, m, v, R, metrop_sd_rho_trans, sigma2_g
     .Call(`_hotspotRM_hotspotRM`, mcmc_samples, z, n, m, v, R, metrop_sd_rho_trans, sigma2_gamma_prior, a_sigma2_prior, b_sigma2_prior, Sigma_inv_scale_prior, Sigma_inv_df_prior, beta_init, gamma_init, alpha_init, sigma2_init, Sigma_inv_init, rho_init)
 }
 
+hotspotRM1 <- function(mcmc_samples, z, n, m, v, R, metrop_sd_rho_trans, sigma2_gamma_prior = NULL, Sigma_inv_scale_prior = NULL, Sigma_inv_df_prior = NULL, beta_init = NULL, gamma_init = NULL, Sigma_inv_init = NULL, rho_init = NULL) {
+    .Call(`_hotspotRM_hotspotRM1`, mcmc_samples, z, n, m, v, R, metrop_sd_rho_trans, sigma2_gamma_prior, Sigma_inv_scale_prior, Sigma_inv_df_prior, beta_init, gamma_init, Sigma_inv_init, rho_init)
+}
+
 omega_update <- function(x, m, beta, alpha, log_sum_exp) {
     .Call(`_hotspotRM_omega_update`, x, m, beta, alpha, log_sum_exp)
 }
