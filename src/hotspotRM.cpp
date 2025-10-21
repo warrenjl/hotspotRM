@@ -53,26 +53,39 @@ for(int j = 0; j < c; ++j){
   
 //v_design
 Rcpp::List v_design_list(d-1);
-for(int j = 0; j < (d-1); ++j){
-  
-   arma::mat block(c, (p_v*c), arma::fill::zeros);
-   arma::rowvec vrow = v.row(j);  
-  
-   for(int k = 0; k < c; ++k){
-      block.submat(k, (k*p_v), k, (k*p_v + p_v - 1)) = vrow;
-      }
-   v_design_list[j] = block;
-
-   }
-
 int total_rows = (d-1)*c;
 arma::mat v_design(total_rows, (p_v*c), arma::fill::zeros);
-for(int j = 0; j < (d-1); ++j){
+if(p_v > 0){
   
-   arma::mat block = Rcpp::as<arma::mat>(v_design_list[j]);
-   v_design.rows((j*c), ((j + 1)*c - 1)) = block;
+  for(int j = 0; j < (d-1); ++j){
+  
+     arma::mat block(c, (p_v*c), arma::fill::zeros);
+     arma::rowvec vrow = v.row(j);  
+  
+     for(int k = 0; k < c; ++k){
+        block.submat(k, (k*p_v), k, (k*p_v + p_v - 1)) = vrow;
+        }
+     v_design_list[j] = block;
 
-   }
+     }
+
+  for(int j = 0; j < (d-1); ++j){
+  
+     arma::mat block = Rcpp::as<arma::mat>(v_design_list[j]);
+     v_design.rows((j*c), ((j + 1)*c - 1)) = block;
+
+     }
+  
+  }
+
+if(p_v == 0){
+  for(int j = 0; j < (d-1); ++j){
+    
+     arma::mat block(c, (p_v*c), arma::fill::zeros);
+     v_design_list[j] = block;
+    
+     }
+  }
 
 //Parameters
 arma::cube beta(c, (d-1), mcmc_samples); beta.fill(0.00);
