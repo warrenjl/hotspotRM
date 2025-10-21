@@ -17,7 +17,7 @@ double sigma2_update(int k,
 double rate_update = 0.00;
 for(int l = 0; l < (d-1); ++l){
    rate_update = rate_update +
-                 sum(pow(alpha(arma::span(counter, (n + counter - 1)), l), 2));
+                 arma::as_scalar(sum(pow(alpha(arma::span(counter, (n + counter - 1)), l), 2)));
    }
 rate_update = rate_update/2.00 +
               b_sigma2;
