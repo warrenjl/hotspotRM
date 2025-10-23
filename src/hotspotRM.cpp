@@ -256,6 +256,19 @@ for(int j = 1; j < mcmc_samples; ++j){
       
       }
    
+   //Centering on the fly
+   for(int k = 0; k < c; ++k){
+     
+      double spatial_mean = mean(beta.slice(j).row(k) - beta_prior_mean.row(k));
+      beta.slice(j).row(k) = beta.slice(j).row(k) + 
+                             -spatial_mean;
+       
+      }
+   for(int k = 0; k < (d-1); ++k){
+      temp_mat.col(k+1) = x*beta.slice(j).col(k) + 
+                          alpha.col(k);
+      }
+   
    //gamma
    Rcpp::List gamma_output = gamma_update(v_design,
                                           c,
