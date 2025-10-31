@@ -360,7 +360,7 @@ for(int j = 1; j < mcmc_samples; ++j){
       double accrate_rho_trans = round(100*(acctot_rho_trans/(double)j));
       Rcpp::Rcout << "rho Acceptance: " << accrate_rho_trans << "%" << std::endl;
       
-      Rcpp::Rcout << "********************" << std::endl;
+      Rcpp::Rcout << "*******************" << std::endl;
       
       }
     
