@@ -14,13 +14,9 @@ double sigma2_update(int k,
                      double shape_update,
                      double b_sigma2){
 
-double rate_update = 0.00;
-for(int l = 0; l < (d-1); ++l){
-   rate_update = rate_update +
-                 arma::as_scalar(sum(pow(alpha(arma::span(counter, (n + counter - 1)), l), 2)));
-   }
-rate_update = rate_update/2.00 +
-              b_sigma2;
+arma::mat alpha_k = alpha.rows(counter, (counter + n - 1));
+double rate_update = arma::accu(alpha_k % alpha_k)/2.00 +
+                     b_sigma2;
 double sigma2 = 1.00/R::rgamma(shape_update,
                                (1.00/rate_update));
 

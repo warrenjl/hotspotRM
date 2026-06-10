@@ -6,13 +6,13 @@ using namespace Rcpp;
 // [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::export]]
 
-arma::vec omega_update(arma::mat x,
+arma::vec omega_update(arma::mat X_star,
                        arma::vec m,
-                       arma::vec beta,
+                       arma::vec theta,
                        arma::vec alpha,
                        arma::vec log_sum_exp){
 
-arma::vec psi = x*beta + 
+arma::vec psi = X_star*theta + 
                 alpha;
 
 arma::vec omega = rcpp_pgdraw(m,

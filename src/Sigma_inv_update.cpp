@@ -8,23 +8,21 @@ using namespace Rcpp;
 
 arma::mat Sigma_inv_update(int c,
                            int d,
+                           int p_g,
                            Rcpp::List v_design_list,
-                           arma::mat beta,
+                           arma::mat theta,
                            arma::vec gamma_long,
                            arma::mat Q,
                            arma::mat Sigma_inv_scale_inv,
                            double Sigma_inv_df){
 
-arma::mat temp(c,c); temp.fill(0.00);
-for(int j = 0; j < (d-1); ++ j){
-   for(int k = 0; k < (d-1); ++k){
-      temp = temp +
-             ((beta.col(j) - (Rcpp::as<arma::mat>(v_design_list[j])*gamma_long))*trans(beta.col(k) - (Rcpp::as<arma::mat>(v_design_list[k])*gamma_long)))*Q(k,j);
-      }
-   } 
-temp = temp +
-       Sigma_inv_scale_inv;
-temp = inv_sympd(temp);
+arma::mat B(c*(1 + p_g), (d-1));
+for(int j = 0; j < (d-1); ++j){
+   B.col(j) = theta.col(j) + 
+              -Rcpp::as<arma::mat>(v_design_list[j])*gamma_long;
+   }
+
+arma::mat temp = inv_sympd(B*Q*B.t() + Sigma_inv_scale_inv);
 
 double df = d + 
             -1 +
@@ -33,8 +31,8 @@ double df = d +
 //Bartlett Decomposition
 arma::mat L = arma::chol(temp,
                          "lower");
-arma::mat A(c,c); A.fill(0.00);
-for(int j = 0; j < c; ++j){
+arma::mat A((c*(1 + p_g)), (c*(1 + p_g))); A.fill(0.00);
+for(int j = 0; j < (c*(1 + p_g)); ++j){
   
    A(j,j) = sqrt(R::rchisq(df - j));
    for(int k = 0; k < j; ++k){
@@ -49,11 +47,5 @@ arma::mat Sigma_inv = (L*A)*trans(L*A);
 return(Sigma_inv);
 
 }
-
-  
-  
-
-  
-
 
 
