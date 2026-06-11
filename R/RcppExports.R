@@ -13,12 +13,12 @@ gamma_update <- function(v_design_list, c, d, p_v, p_g, theta, Sigma_inv_old, Q,
     .Call(`_hotspotRM_gamma_update`, v_design_list, c, d, p_v, p_g, theta, Sigma_inv_old, Q, gamma_prior_cov_inv)
 }
 
-hotspotRM <- function(mcmc_samples, z, n, m, v, R, g, metrop_sd_rho_trans, sigma2_gamma_prior = NULL, a_sigma2_prior = NULL, b_sigma2_prior = NULL, Sigma_inv_scale_prior = NULL, Sigma_inv_df_prior = NULL, theta_init = NULL, gamma_init = NULL, alpha_init = NULL, sigma2_init = NULL, Sigma_inv_init = NULL, rho_init = NULL) {
-    .Call(`_hotspotRM_hotspotRM`, mcmc_samples, z, n, m, v, R, g, metrop_sd_rho_trans, sigma2_gamma_prior, a_sigma2_prior, b_sigma2_prior, Sigma_inv_scale_prior, Sigma_inv_df_prior, theta_init, gamma_init, alpha_init, sigma2_init, Sigma_inv_init, rho_init)
+hotspotRM <- function(mcmc_samples, z, n, m, v, R, x, metrop_sd_rho_trans, sigma2_gamma_prior = NULL, a_sigma2_prior = NULL, b_sigma2_prior = NULL, Sigma_inv_scale_prior = NULL, Sigma_inv_df_prior = NULL, theta_init = NULL, gamma_init = NULL, alpha_init = NULL, sigma2_init = NULL, Sigma_inv_init = NULL, rho_init = NULL) {
+    .Call(`_hotspotRM_hotspotRM`, mcmc_samples, z, n, m, v, R, x, metrop_sd_rho_trans, sigma2_gamma_prior, a_sigma2_prior, b_sigma2_prior, Sigma_inv_scale_prior, Sigma_inv_df_prior, theta_init, gamma_init, alpha_init, sigma2_init, Sigma_inv_init, rho_init)
 }
 
-hotspotRM1 <- function(mcmc_samples, z, n, m, v, R, g, metrop_sd_rho_trans, sigma2_gamma_prior = NULL, Sigma_inv_scale_prior = NULL, Sigma_inv_df_prior = NULL, theta_init = NULL, gamma_init = NULL, Sigma_inv_init = NULL, rho_init = NULL) {
-    .Call(`_hotspotRM_hotspotRM1`, mcmc_samples, z, n, m, v, R, g, metrop_sd_rho_trans, sigma2_gamma_prior, Sigma_inv_scale_prior, Sigma_inv_df_prior, theta_init, gamma_init, Sigma_inv_init, rho_init)
+hotspotRM1 <- function(mcmc_samples, z, n, m, v, R, x, metrop_sd_rho_trans, sigma2_gamma_prior = NULL, Sigma_inv_scale_prior = NULL, Sigma_inv_df_prior = NULL, theta_init = NULL, gamma_init = NULL, Sigma_inv_init = NULL, rho_init = NULL) {
+    .Call(`_hotspotRM_hotspotRM1`, mcmc_samples, z, n, m, v, R, x, metrop_sd_rho_trans, sigma2_gamma_prior, Sigma_inv_scale_prior, Sigma_inv_df_prior, theta_init, gamma_init, Sigma_inv_init, rho_init)
 }
 
 omega_update <- function(X_star, m, theta, alpha, log_sum_exp) {

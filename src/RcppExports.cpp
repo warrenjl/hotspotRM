@@ -67,8 +67,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // hotspotRM
-Rcpp::List hotspotRM(int mcmc_samples, arma::mat z, arma::vec n, arma::vec m, arma::mat v, arma::mat R, arma::mat g, double metrop_sd_rho_trans, Rcpp::Nullable<double> sigma2_gamma_prior, Rcpp::Nullable<double> a_sigma2_prior, Rcpp::Nullable<double> b_sigma2_prior, Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior, Rcpp::Nullable<double> Sigma_inv_df_prior, Rcpp::Nullable<arma::mat> theta_init, Rcpp::Nullable<arma::mat> gamma_init, Rcpp::Nullable<arma::mat> alpha_init, Rcpp::Nullable<arma::vec> sigma2_init, Rcpp::Nullable<arma::mat> Sigma_inv_init, Rcpp::Nullable<double> rho_init);
-RcppExport SEXP _hotspotRM_hotspotRM(SEXP mcmc_samplesSEXP, SEXP zSEXP, SEXP nSEXP, SEXP mSEXP, SEXP vSEXP, SEXP RSEXP, SEXP gSEXP, SEXP metrop_sd_rho_transSEXP, SEXP sigma2_gamma_priorSEXP, SEXP a_sigma2_priorSEXP, SEXP b_sigma2_priorSEXP, SEXP Sigma_inv_scale_priorSEXP, SEXP Sigma_inv_df_priorSEXP, SEXP theta_initSEXP, SEXP gamma_initSEXP, SEXP alpha_initSEXP, SEXP sigma2_initSEXP, SEXP Sigma_inv_initSEXP, SEXP rho_initSEXP) {
+Rcpp::List hotspotRM(int mcmc_samples, arma::mat z, arma::vec n, arma::vec m, arma::mat v, arma::mat R, arma::mat x, double metrop_sd_rho_trans, Rcpp::Nullable<double> sigma2_gamma_prior, Rcpp::Nullable<double> a_sigma2_prior, Rcpp::Nullable<double> b_sigma2_prior, Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior, Rcpp::Nullable<double> Sigma_inv_df_prior, Rcpp::Nullable<arma::mat> theta_init, Rcpp::Nullable<arma::mat> gamma_init, Rcpp::Nullable<arma::mat> alpha_init, Rcpp::Nullable<arma::vec> sigma2_init, Rcpp::Nullable<arma::mat> Sigma_inv_init, Rcpp::Nullable<double> rho_init);
+RcppExport SEXP _hotspotRM_hotspotRM(SEXP mcmc_samplesSEXP, SEXP zSEXP, SEXP nSEXP, SEXP mSEXP, SEXP vSEXP, SEXP RSEXP, SEXP xSEXP, SEXP metrop_sd_rho_transSEXP, SEXP sigma2_gamma_priorSEXP, SEXP a_sigma2_priorSEXP, SEXP b_sigma2_priorSEXP, SEXP Sigma_inv_scale_priorSEXP, SEXP Sigma_inv_df_priorSEXP, SEXP theta_initSEXP, SEXP gamma_initSEXP, SEXP alpha_initSEXP, SEXP sigma2_initSEXP, SEXP Sigma_inv_initSEXP, SEXP rho_initSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -78,7 +78,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::vec >::type m(mSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type v(vSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type R(RSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type g(gSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
     Rcpp::traits::input_parameter< double >::type metrop_sd_rho_trans(metrop_sd_rho_transSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<double> >::type sigma2_gamma_prior(sigma2_gamma_priorSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<double> >::type a_sigma2_prior(a_sigma2_priorSEXP);
@@ -91,13 +91,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::Nullable<arma::vec> >::type sigma2_init(sigma2_initSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<arma::mat> >::type Sigma_inv_init(Sigma_inv_initSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<double> >::type rho_init(rho_initSEXP);
-    rcpp_result_gen = Rcpp::wrap(hotspotRM(mcmc_samples, z, n, m, v, R, g, metrop_sd_rho_trans, sigma2_gamma_prior, a_sigma2_prior, b_sigma2_prior, Sigma_inv_scale_prior, Sigma_inv_df_prior, theta_init, gamma_init, alpha_init, sigma2_init, Sigma_inv_init, rho_init));
+    rcpp_result_gen = Rcpp::wrap(hotspotRM(mcmc_samples, z, n, m, v, R, x, metrop_sd_rho_trans, sigma2_gamma_prior, a_sigma2_prior, b_sigma2_prior, Sigma_inv_scale_prior, Sigma_inv_df_prior, theta_init, gamma_init, alpha_init, sigma2_init, Sigma_inv_init, rho_init));
     return rcpp_result_gen;
 END_RCPP
 }
 // hotspotRM1
-Rcpp::List hotspotRM1(int mcmc_samples, arma::mat z, arma::vec n, arma::vec m, arma::mat v, arma::mat R, arma::mat g, double metrop_sd_rho_trans, Rcpp::Nullable<double> sigma2_gamma_prior, Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior, Rcpp::Nullable<double> Sigma_inv_df_prior, Rcpp::Nullable<arma::mat> theta_init, Rcpp::Nullable<arma::mat> gamma_init, Rcpp::Nullable<arma::mat> Sigma_inv_init, Rcpp::Nullable<double> rho_init);
-RcppExport SEXP _hotspotRM_hotspotRM1(SEXP mcmc_samplesSEXP, SEXP zSEXP, SEXP nSEXP, SEXP mSEXP, SEXP vSEXP, SEXP RSEXP, SEXP gSEXP, SEXP metrop_sd_rho_transSEXP, SEXP sigma2_gamma_priorSEXP, SEXP Sigma_inv_scale_priorSEXP, SEXP Sigma_inv_df_priorSEXP, SEXP theta_initSEXP, SEXP gamma_initSEXP, SEXP Sigma_inv_initSEXP, SEXP rho_initSEXP) {
+Rcpp::List hotspotRM1(int mcmc_samples, arma::mat z, arma::vec n, arma::vec m, arma::mat v, arma::mat R, arma::mat x, double metrop_sd_rho_trans, Rcpp::Nullable<double> sigma2_gamma_prior, Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior, Rcpp::Nullable<double> Sigma_inv_df_prior, Rcpp::Nullable<arma::mat> theta_init, Rcpp::Nullable<arma::mat> gamma_init, Rcpp::Nullable<arma::mat> Sigma_inv_init, Rcpp::Nullable<double> rho_init);
+RcppExport SEXP _hotspotRM_hotspotRM1(SEXP mcmc_samplesSEXP, SEXP zSEXP, SEXP nSEXP, SEXP mSEXP, SEXP vSEXP, SEXP RSEXP, SEXP xSEXP, SEXP metrop_sd_rho_transSEXP, SEXP sigma2_gamma_priorSEXP, SEXP Sigma_inv_scale_priorSEXP, SEXP Sigma_inv_df_priorSEXP, SEXP theta_initSEXP, SEXP gamma_initSEXP, SEXP Sigma_inv_initSEXP, SEXP rho_initSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -107,7 +107,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::vec >::type m(mSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type v(vSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type R(RSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type g(gSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
     Rcpp::traits::input_parameter< double >::type metrop_sd_rho_trans(metrop_sd_rho_transSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<double> >::type sigma2_gamma_prior(sigma2_gamma_priorSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<arma::mat> >::type Sigma_inv_scale_prior(Sigma_inv_scale_priorSEXP);
@@ -116,7 +116,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::Nullable<arma::mat> >::type gamma_init(gamma_initSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<arma::mat> >::type Sigma_inv_init(Sigma_inv_initSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<double> >::type rho_init(rho_initSEXP);
-    rcpp_result_gen = Rcpp::wrap(hotspotRM1(mcmc_samples, z, n, m, v, R, g, metrop_sd_rho_trans, sigma2_gamma_prior, Sigma_inv_scale_prior, Sigma_inv_df_prior, theta_init, gamma_init, Sigma_inv_init, rho_init));
+    rcpp_result_gen = Rcpp::wrap(hotspotRM1(mcmc_samples, z, n, m, v, R, x, metrop_sd_rho_trans, sigma2_gamma_prior, Sigma_inv_scale_prior, Sigma_inv_df_prior, theta_init, gamma_init, Sigma_inv_init, rho_init));
     return rcpp_result_gen;
 END_RCPP
 }

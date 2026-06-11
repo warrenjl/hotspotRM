@@ -12,7 +12,7 @@ Rcpp::List hotspotRM1(int mcmc_samples,
                       arma::vec m,
                       arma::mat v,
                       arma::mat R,
-                      arma::mat g,
+                      arma::mat x,
                       double metrop_sd_rho_trans,
                       Rcpp::Nullable<double> sigma2_gamma_prior = R_NilValue,
                       Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior = R_NilValue,
@@ -23,6 +23,7 @@ Rcpp::List hotspotRM1(int mcmc_samples,
                       Rcpp::Nullable<double> rho_init = R_NilValue){
  
 //Defining Parameters and Quantities of Interest
+arma::mat g = x;
 int d = z.n_cols;
 int c = n.size();
 int p_v = v.n_cols;
