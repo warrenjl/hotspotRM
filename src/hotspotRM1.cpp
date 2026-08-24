@@ -119,6 +119,8 @@ arma::cube Sigma_inv((c*(1 + p_g)), (c*(1 + p_g)), mcmc_samples); Sigma_inv.fill
 arma::vec rho(mcmc_samples); rho.fill(0.00);
 arma::mat omega(sum_n, (d-1)); omega.fill(0.00);
 arma::cube p_signal(c, d, mcmc_samples); p_signal.fill(0.00);
+arma::cube psi_1(c, d, mcmc_samples); psi_1.fill(0.00);
+arma::cube psi_2(c, d, mcmc_samples); psi_2.fill(0.00);
 
 //Prior Information
 double sigma2_gamma = 10000.00;
@@ -317,6 +319,14 @@ for(int j = 1; j < mcmc_samples; ++j){
       p_signal.slice(j).col(k+1) = exp(beta.slice(j).col(k))/(1.00 + denom);
       }
    
+   //psi_1 
+   arma::rowvec group_avg = arma::mean(p_signal.slice(j), 0); 
+   psi_1.slice(j) = p_signal.slice(j) - arma::repmat(group_avg, c, 1);
+   
+   //psi_2 
+   arma::vec region_avg = arma::mean(p_signal.slice(j), 1);    
+   psi_2.slice(j) = p_signal.slice(j) - arma::repmat(region_avg, 1, d);
+   
    //Progress
    if((j + 1) % 10 == 0){ 
      Rcpp::checkUserInterrupt();
@@ -342,6 +352,8 @@ for(int j = 1; j < mcmc_samples; ++j){
                              Rcpp::Named("Sigma_inv") = Sigma_inv,
                              Rcpp::Named("rho") = rho,
                              Rcpp::Named("p_signal") = p_signal,
+                             Rcpp::Named("psi_1") = psi_1,
+                             Rcpp::Named("psi_2") = psi_2,
                              Rcpp::Named("acctot_rho_trans") = acctot_rho_trans);
   
    }
