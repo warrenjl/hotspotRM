@@ -1,5 +1,5 @@
 #include "RcppArmadillo.h"
-#include "hotspotRM.h"
+#include "MLDM.h"
 using namespace arma;
 using namespace Rcpp;
 // [[Rcpp::depends(RcppArmadillo)]]

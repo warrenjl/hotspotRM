@@ -1,5 +1,5 @@
-#ifndef __hotspotRM__
-#define __hotspotRM__
+#ifndef __MLDM__
+#define __MLDM__
 
 arma::vec rcpp_pgdraw(arma::vec b, 
                       arma::vec c);
@@ -75,40 +75,40 @@ Rcpp::List rho_update(int c,
                       double metrop_sd_rho_trans,
                       int acctot_rho_trans);
 
-Rcpp::List hotspotRM1(int mcmc_samples,
-                      arma::mat z,
-                      arma::vec n,
-                      arma::vec m,
-                      arma::mat v,
-                      arma::mat R,
-                      arma::mat x,
-                      double metrop_sd_rho_trans,
-                      Rcpp::Nullable<double> sigma2_gamma_prior,
-                      Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior,
-                      Rcpp::Nullable<double> Sigma_inv_df_prior,
-                      Rcpp::Nullable<arma::mat> theta_init,
-                      Rcpp::Nullable<arma::mat> gamma_init,
-                      Rcpp::Nullable<arma::mat> Sigma_inv_init,
-                      Rcpp::Nullable<double> rho_init);
+Rcpp::List MLDM1(int mcmc_samples,
+                 arma::mat z,
+                 arma::vec n,
+                 arma::vec m,
+                 arma::mat v,
+                 arma::mat R,
+                 arma::mat x,
+                 double metrop_sd_rho_trans,
+                 Rcpp::Nullable<double> sigma2_gamma_prior,
+                 Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior,
+                 Rcpp::Nullable<double> Sigma_inv_df_prior,
+                 Rcpp::Nullable<arma::mat> theta_init,
+                 Rcpp::Nullable<arma::mat> gamma_init,
+                 Rcpp::Nullable<arma::mat> Sigma_inv_init,
+                 Rcpp::Nullable<double> rho_init);
   
-Rcpp::List hotspotRM(int mcmc_samples,
-                     arma::mat z,
-                     arma::vec n,
-                     arma::vec m,
-                     arma::mat v,
-                     arma::mat R,
-                     arma::mat x,
-                     double metrop_sd_rho_trans,
-                     Rcpp::Nullable<double> sigma2_gamma_prior,
-                     Rcpp::Nullable<double> a_sigma2_prior,
-                     Rcpp::Nullable<double> b_sigma2_prior,
-                     Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior,
-                     Rcpp::Nullable<double> Sigma_inv_df_prior,
-                     Rcpp::Nullable<arma::mat> theta_init,
-                     Rcpp::Nullable<arma::mat> gamma_init,
-                     Rcpp::Nullable<arma::mat> alpha_init,
-                     Rcpp::Nullable<arma::vec> sigma2_init,
-                     Rcpp::Nullable<arma::mat> Sigma_inv_init,
-                     Rcpp::Nullable<double> rho_init);
+Rcpp::List MLDM(int mcmc_samples,
+                arma::mat z,
+                arma::vec n,
+                arma::vec m,
+                arma::mat v,
+                arma::mat R,
+                arma::mat x,
+                double metrop_sd_rho_trans,
+                Rcpp::Nullable<double> sigma2_gamma_prior,
+                Rcpp::Nullable<double> a_sigma2_prior,
+                Rcpp::Nullable<double> b_sigma2_prior,
+                Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior,
+                Rcpp::Nullable<double> Sigma_inv_df_prior,
+                Rcpp::Nullable<arma::mat> theta_init,
+                Rcpp::Nullable<arma::mat> gamma_init,
+                Rcpp::Nullable<arma::mat> alpha_init,
+                Rcpp::Nullable<arma::vec> sigma2_init,
+                Rcpp::Nullable<arma::mat> Sigma_inv_init,
+                Rcpp::Nullable<double> rho_init);
 
-#endif // __hotspotRM__
+#endif // __MLDM__

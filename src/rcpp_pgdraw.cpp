@@ -24,7 +24,7 @@
 //#include <omp.h>
 
 #include "RcppArmadillo.h"
-#include "hotspotRM.h"
+#include "MLDM.h"
 using namespace arma;
 using namespace Rcpp;
 

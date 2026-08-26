@@ -1,26 +1,26 @@
 #include "RcppArmadillo.h"
-#include "hotspotRM.h"
+#include "MLDM.h"
 using namespace arma;
 using namespace Rcpp;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::export]]
 
-Rcpp::List hotspotRM1(int mcmc_samples,
-                      arma::mat z,
-                      arma::vec n,
-                      arma::vec m,
-                      arma::mat v,
-                      arma::mat R,
-                      arma::mat x,
-                      double metrop_sd_rho_trans,
-                      Rcpp::Nullable<double> sigma2_gamma_prior = R_NilValue,
-                      Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior = R_NilValue,
-                      Rcpp::Nullable<double> Sigma_inv_df_prior = R_NilValue,
-                      Rcpp::Nullable<arma::mat> theta_init = R_NilValue,
-                      Rcpp::Nullable<arma::mat> gamma_init = R_NilValue,
-                      Rcpp::Nullable<arma::mat> Sigma_inv_init = R_NilValue,
-                      Rcpp::Nullable<double> rho_init = R_NilValue){
+Rcpp::List MLDM1(int mcmc_samples,
+                 arma::mat z,
+                 arma::vec n,
+                 arma::vec m,
+                 arma::mat v,
+                 arma::mat R,
+                 arma::mat x,
+                 double metrop_sd_rho_trans,
+                 Rcpp::Nullable<double> sigma2_gamma_prior = R_NilValue,
+                 Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior = R_NilValue,
+                 Rcpp::Nullable<double> Sigma_inv_df_prior = R_NilValue,
+                 Rcpp::Nullable<arma::mat> theta_init = R_NilValue,
+                 Rcpp::Nullable<arma::mat> gamma_init = R_NilValue,
+                 Rcpp::Nullable<arma::mat> Sigma_inv_init = R_NilValue,
+                 Rcpp::Nullable<double> rho_init = R_NilValue){
  
 //Defining Parameters and Quantities of Interest
 arma::mat g = x;
