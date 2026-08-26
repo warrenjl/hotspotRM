@@ -1,6 +1,16 @@
 #ifndef __MLDM__
 #define __MLDM__
 
+arma::cube p_signal_space_create(arma::cube beta);
+
+arma::cube p_signal_full_create(arma::cube beta,
+                                arma::cube gamma,
+                                arma::mat v);
+
+arma::cube psi1_create(arma::cube p_signal);
+
+arma::cube psi2_create(arma::cube p_signal);
+  
 arma::vec rcpp_pgdraw(arma::vec b, 
                       arma::vec c);
 

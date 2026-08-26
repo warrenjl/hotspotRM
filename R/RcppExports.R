@@ -25,6 +25,22 @@ omega_update <- function(X_star, m, theta, alpha, log_sum_exp) {
     .Call(`_MLDM_omega_update`, X_star, m, theta, alpha, log_sum_exp)
 }
 
+p_signal_full_create <- function(beta, gamma, v) {
+    .Call(`_MLDM_p_signal_full_create`, beta, gamma, v)
+}
+
+p_signal_space_create <- function(beta) {
+    .Call(`_MLDM_p_signal_space_create`, beta)
+}
+
+psi1_create <- function(p_signal) {
+    .Call(`_MLDM_psi1_create`, p_signal)
+}
+
+psi2_create <- function(p_signal) {
+    .Call(`_MLDM_psi2_create`, p_signal)
+}
+
 rcpp_pgdraw <- function(b, c) {
     .Call(`_MLDM_rcpp_pgdraw`, b, c)
 }

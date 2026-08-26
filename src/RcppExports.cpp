@@ -135,6 +135,52 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// p_signal_full_create
+arma::cube p_signal_full_create(arma::cube beta, arma::cube gamma, arma::mat v);
+RcppExport SEXP _MLDM_p_signal_full_create(SEXP betaSEXP, SEXP gammaSEXP, SEXP vSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type v(vSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_signal_full_create(beta, gamma, v));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_signal_space_create
+arma::cube p_signal_space_create(arma::cube beta);
+RcppExport SEXP _MLDM_p_signal_space_create(SEXP betaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube >::type beta(betaSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_signal_space_create(beta));
+    return rcpp_result_gen;
+END_RCPP
+}
+// psi1_create
+arma::cube psi1_create(arma::cube p_signal);
+RcppExport SEXP _MLDM_psi1_create(SEXP p_signalSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube >::type p_signal(p_signalSEXP);
+    rcpp_result_gen = Rcpp::wrap(psi1_create(p_signal));
+    return rcpp_result_gen;
+END_RCPP
+}
+// psi2_create
+arma::cube psi2_create(arma::cube p_signal);
+RcppExport SEXP _MLDM_psi2_create(SEXP p_signalSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube >::type p_signal(p_signalSEXP);
+    rcpp_result_gen = Rcpp::wrap(psi2_create(p_signal));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_pgdraw
 arma::vec rcpp_pgdraw(arma::vec b, arma::vec c);
 RcppExport SEXP _MLDM_rcpp_pgdraw(SEXP bSEXP, SEXP cSEXP) {
@@ -219,6 +265,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MLDM_alpha_update", (DL_FUNC) &_MLDM_alpha_update, 7},
     {"_MLDM_gamma_update", (DL_FUNC) &_MLDM_gamma_update, 9},
     {"_MLDM_omega_update", (DL_FUNC) &_MLDM_omega_update, 5},
+    {"_MLDM_p_signal_full_create", (DL_FUNC) &_MLDM_p_signal_full_create, 3},
+    {"_MLDM_p_signal_space_create", (DL_FUNC) &_MLDM_p_signal_space_create, 1},
+    {"_MLDM_psi1_create", (DL_FUNC) &_MLDM_psi1_create, 1},
+    {"_MLDM_psi2_create", (DL_FUNC) &_MLDM_psi2_create, 1},
     {"_MLDM_rcpp_pgdraw", (DL_FUNC) &_MLDM_rcpp_pgdraw, 2},
     {"_MLDM_rho_update", (DL_FUNC) &_MLDM_rho_update, 12},
     {"_MLDM_sigma2_update", (DL_FUNC) &_MLDM_sigma2_update, 7},
