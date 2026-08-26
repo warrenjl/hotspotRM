@@ -181,14 +181,29 @@ double sign = 0.00;
 log_det(log_deter, sign, Q);
 
 //p_signal
-arma::vec denom = exp(beta.slice(0).col(0));
+//arma::vec denom = exp(beta.slice(0).col(0));
+//for(int j = 1; j < (d-1); ++j){
+//   denom = denom +
+//           exp(beta.slice(0).col(j));
+//   }
+//p_signal.slice(0).col(0) = 1.00/(1.00 + denom);
+//for(int j = 0; j < (d-1); ++j){
+//   p_signal.slice(0).col(j+1) = exp(beta.slice(0).col(j))/(1.00 + denom);
+//   }
+
+//p_signal
+arma::mat gamma_beta = gamma.slice(0).cols(0, (c - 1));      
+arma::mat correction  = v*gamma_beta;                     
+arma::mat beta_resid  = beta.slice(0) - correction.t(); 
+
+arma::vec denom = exp(beta_resid.col(0));
 for(int j = 1; j < (d-1); ++j){
    denom = denom +
-           exp(beta.slice(0).col(j));
+           exp(beta_resid.col(j));
    }
 p_signal.slice(0).col(0) = 1.00/(1.00 + denom);
 for(int j = 0; j < (d-1); ++j){
-   p_signal.slice(0).col(j+1) = exp(beta.slice(0).col(j))/(1.00 + denom);
+   p_signal.slice(0).col(j+1) = exp(beta_resid.col(j))/(1.00 + denom);
    }
 
 //Metropolis Settings
@@ -309,14 +324,29 @@ for(int j = 1; j < mcmc_samples; ++j){
      }
    
    //p_signal
-   arma::vec denom = exp(beta.slice(j).col(0));
+   //arma::vec denom = exp(beta.slice(j).col(0));
+   //for(int k = 1; k < (d-1); ++k){
+   //   denom = denom +
+   //           exp(beta.slice(j).col(k));
+   //   }
+   //p_signal.slice(j).col(0) = 1.00/(1.00 + denom);
+   //for(int k = 0; k < (d-1); ++k){
+   //   p_signal.slice(j).col(k+1) = exp(beta.slice(j).col(k))/(1.00 + denom);
+   //   }
+   
+   //p_signal
+   arma::mat gamma_beta = gamma.slice(j).cols(0, (c - 1));
+   arma::mat correction  = v*gamma_beta;
+   arma::mat beta_resid  = beta.slice(j) - correction.t();
+
+   arma::vec denom = exp(beta_resid.col(0));
    for(int k = 1; k < (d-1); ++k){
       denom = denom +
-              exp(beta.slice(j).col(k));
+              exp(beta_resid.col(k));
       }
    p_signal.slice(j).col(0) = 1.00/(1.00 + denom);
    for(int k = 0; k < (d-1); ++k){
-      p_signal.slice(j).col(k+1) = exp(beta.slice(j).col(k))/(1.00 + denom);
+      p_signal.slice(j).col(k+1) = exp(beta_resid.col(k))/(1.00 + denom);
       }
    
    //psi_1 
