@@ -1,0 +1,207 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# MLDM: Multiple-Location Disease Mapping
+
+## MLDM_Example
+
+[1] Simulate data from the proposed model:
+
+* Setting the reproducibility seed and initializing packages for data simulation:
+```{r}
+set.seed(2347)
+
+library(MLDM)
+library(mnormt)              #Multivariate normal distribution
+library(clusterGeneration)   #Random correlation matrix
+```
+
+* Setting the global data values:
+```{r}
+c<-3  #Number of disease groups
+
+n<-rpois(n = c,
+         lambda = 50) +
+   1  #Number of individuals per group
+
+m<-rpois(n = sum(n),
+         lambda = 10) +
+   1  #Number of locations per individual
+
+n_grid<-7
+d<-n_grid^2  #Total number of regions
+
+#Queen's adjacency matrix
+R<-matrix(0,
+          nrow = d,
+          ncol = d)
+index<-function(i, j){
+       return((i - 1)*n_grid + j)
+       }
+for(j in 1:n_grid){
+   for(k in 1:n_grid){
+      idx<-index(j, k)
+      neighbors<-c()
+      if(j > 1) neighbors<-c(neighbors, index((j-1), k))
+      if(j < n_grid) neighbors<-c(neighbors, index((j+1), k))
+      if(k > 1) neighbors<-c(neighbors, index(j, (k-1)))
+      if(k < n_grid) neighbors<-c(neighbors, index(j, (k+1)))
+      if((j > 1) && (k > 1)) neighbors<-c(neighbors, index((j-1), (k-1)))
+      if((j > 1) && (k < n_grid)) neighbors<-c(neighbors, index((j-1), (k+1)))
+      if((j < n_grid) && (k > 1)) neighbors<-c(neighbors, index((j+1), (k-1)))
+      if((j < n_grid) && (k < n_grid)) neighbors<-c(neighbors, index((j+1), (k+1)))
+      R[idx, neighbors]<-1
+      }
+   }
+R_full<-R
+R<-R_full[-1, -1]  #Reference region is [1,1]
+
+p_v<-2  #Number of region-level covariates
+v_full<-matrix(rnorm(n = (d*p_v)),
+               nrow = d,
+               ncol = p_v)
+v<-v_full[-1,]  #Remove reference region row
+
+p_x<-1  #Number of individual-level covariates
+x<-as.matrix(scale(rnorm(n = sum(n))))  #Standardized individual-level covariate
+```
+
+* Setting the values for the statistical model parameters:
+```{r}
+rho_true<-0.80
+Q_true<-rho_true*(diag(rowSums(R)) - R) +
+        (1.00 - rho_true)*diag(d - 1)
+Q_inv_true<-chol2inv(chol(Q_true))
+
+Sigma_true<-rcorrmatrix(c*(1 + p_x))  #True cross-covariance (beta and delta jointly)
+
+gamma_true<-rnorm(n = (c*(1 + p_x)*p_v))  #N(0,1) region-level covariate coefficients
+
+v_design_list<-vector("list", (d - 1))
+for(j in 1:(d-1)){
+   v_design_list[[j]]<-as.matrix(Matrix::bdiag(replicate(c*(1 + p_x),
+                                                          matrix(v[j,], 1),
+                                                          simplify = FALSE)))
+   }
+v_design<-do.call(rbind, v_design_list)
+
+#Draw theta_true (beta and delta jointly) from MCAR prior
+theta_true<-rmnorm(n = 1,
+                   mean = (v_design%*%gamma_true),
+                   varcov = (Q_inv_true%x%Sigma_true))
+theta_true<-matrix(theta_true,
+                   nrow = c*(1 + p_x),
+                   ncol = (d - 1))
+
+#Sum-to-zero centering (matches on-the-fly centering in the sampler)
+mean_struct<-matrix((v_design%*%gamma_true),
+                    nrow = c*(1 + p_x),
+                    ncol = (d - 1))
+theta_true<-theta_true -
+            matrix(rowMeans(theta_true - mean_struct),
+                   nrow = c*(1 + p_x),
+                   ncol = (d - 1),
+                   byrow = FALSE)
+
+beta_true<-theta_true[1:c,]                       #c x (d-1)
+delta_true<-theta_true[(c + 1):(c*(1 + p_x)),]    #(c*p_x) x (d-1)
+
+sigma2_true<-0.10^2  #Individual-level random effect variance (shared across groups)
+```
+
+* Simulating the analysis dataset:
+```{r}
+#Group indicator matrix (used for simulation only; built internally by MLDM)
+X<-matrix(0,
+          nrow = sum(n),
+          ncol = c)
+counter<-0
+for(j in 1:c){
+   X[c((1 + counter):(n[j] + counter)), j]<-1
+   counter<-counter + n[j]
+   }
+
+#Blocked individual covariate matrix (used for simulation only; built internally by MLDM)
+G<-matrix(0,
+          nrow = sum(n),
+          ncol = (c*p_x))
+counter<-0
+for(j in 1:c){
+   G[c((1 + counter):(n[j] + counter)),
+     c(((j-1)*p_x + 1):(j*p_x))]<-x[c((1 + counter):(n[j] + counter)),]
+   counter<-counter + n[j]
+   }
+X_star<-cbind(X, G)
+
+alpha_true<-matrix(rnorm(n = (sum(n)*(d - 1)),
+                         sd = sqrt(sigma2_true)),
+                   nrow = sum(n),
+                   ncol = (d - 1))
+
+denom<-exp(X_star%*%theta_true[,1] + alpha_true[,1])
+for(j in 2:(d-1)){
+   denom<-denom + exp(X_star%*%theta_true[,j] + alpha_true[,j])
+   }
+p<-matrix(NA, nrow = sum(n), ncol = d)
+p[,1]<-1.00/(1.00 + denom)
+for(j in 1:(d-1)){
+   p[,(j+1)]<-exp(X_star%*%theta_true[,j] + alpha_true[,j])/(1.00 + denom)
+   }
+
+z<-matrix(NA, nrow = sum(n), ncol = d)
+for(j in 1:sum(n)){
+   z[j,]<-rmultinom(n = 1,
+                    size = m[j],
+                    prob = p[j,])
+   }
+
+#True residual spatial signal
+denom<-exp(beta_true[,1])
+for(j in 2:(d-1)){
+   denom<-denom + exp(beta_true[,j])
+   }
+p_signal_true<-matrix(NA, nrow = c, ncol = d)
+p_signal_true[,1]<-1.00/(1.00 + denom)
+for(j in 1:(d-1)){
+   p_signal_true[,(j+1)]<-exp(beta_true[,j])/(1.00 + denom)
+   }
+```
+
+[2] Fit MLDM to identify disease group-specific spatial hotspots:
+
+```{r echo=TRUE}
+results<-MLDM(mcmc_samples = 11000,
+              z = z,
+              n = n,
+              m = m,
+              v = v,
+              R = R,
+              x = x,
+              metrop_sd_rho_trans = 0.75)
+```
+
+[3] Analyzing Output:
+
+```{r}
+burnin<-1000
+keep_set<-seq((burnin + 1), 11000, 1)
+
+#p_signal: posterior means vs. true values (all groups and regions)
+p_signal<-p_signal_space_create(results$beta[,,keep_set])
+p_signal_pm<-apply(p_signal, c(1, 2), mean)  #c x d posterior mean matrix
+
+plot(as.vector(p_signal_true),
+     as.vector(p_signal_pm),
+     pch = 16,
+     xlab = "True p_signal",
+     ylab = "Posterior Mean p_signal")
+abline(0, 1,
+       col = "red",
+       lwd = 2)  #45-degree reference line
+```

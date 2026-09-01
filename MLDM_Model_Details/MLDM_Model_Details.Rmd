@@ -1,0 +1,88 @@
+---
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
+# MLDM: Multiple-Location Disease Mapping
+
+## Statistical Model
+$$\mathbf{Z}_{ij}|\mathbf{p}_{ij} \stackrel{\text{ind}}{\sim} \text{Multinomial}\left(m_{ij}, \mathbf{p}_{ij}\right),\ i=1,...,c;\ j=1,...,n_i;$$
+
+$$p_{ijk} = \frac{\exp\left\{\beta_{ik} + \mathbf{x}_{ij}^{\top}\boldsymbol{\delta}_{ik} + \alpha_{ijk}\right\}}{1 + \sum_{k'=2}^{d}\exp\left\{\beta_{ik'} + \mathbf{x}_{ij}^{\top}\boldsymbol{\delta}_{ik'} + \alpha_{ijk'}\right\}},\ k=1,...,d;$$
+
+* $\mathbf{Z}_{ij} = (z_{ij1},...,z_{ijd})^{\top}$, where $z_{ijk}$ is the number of individual $j$'s $m_{ij}$ reported locations that fell within region $k$;
+
+* $\mathbf{p}_{ij} = (p_{ij1},...,p_{ijd})^{\top}$, $\sum_{k=1}^{d} p_{ijk} = 1$;
+
+* Region $k=1$ is the reference category: $\beta_{i1} = \alpha_{ij1} = 0$ for all $i,j$, and $\boldsymbol{\delta}_{i1} = \mathbf{0}_{p_x}$ for all $i$;
+
+* $c$: Number of disease groups; $d$: Number of regions; $n_i$: Number of individuals in group $i$; $m_{ij}$: Number of reported locations for individual $j$ in group $i$;
+
+* $p_x$: Length of individual-level covariate vector $\mathbf{x}_{ij}$ (no intercept; same length for all $i,j$);
+
+* $\beta_{ik}$: Global, spatially-structured effect for disease group $i$ in region $k$;
+
+* $\boldsymbol{\delta}_{ik}$: Individual-level covariate effects for disease group $i$ in region $k$;
+
+* $\alpha_{ijk}|\sigma^2_i \stackrel{\text{iid}}{\sim} \text{N}\left(0, \sigma^2_i\right)$: Individual-specific random effects.
+
+Collect the non-reference parameters as $\boldsymbol{\theta}_k^{\top} = \left(\beta_{1k},...,\beta_{ck}, \boldsymbol{\delta}_{1k}^{\top},...,\boldsymbol{\delta}_{ck}^{\top}\right)$ for $k=2,...,d$, and let $\boldsymbol{\theta}^{\top} = \left(\boldsymbol{\theta}_2^{\top},...,\boldsymbol{\theta}_d^{\top}\right)$. The joint prior distribution for $\boldsymbol{\theta}$ is:
+
+$$\boldsymbol{\theta}|\boldsymbol{\gamma},\rho,\Omega \sim \text{MVN}\left(\mathbf{V}^*\boldsymbol{\gamma},\ \mathbf{Q}\left(\mathbf{W},\rho\right)^{-1} \otimes \Omega\right);$$
+
+$$\mathbf{Q}\left(\mathbf{W},\rho\right) = \rho\left\{\text{diag}\left(\text{w}_{2\cdot},...,\text{w}_{d\cdot}\right) - \mathbf{W}\right\} + \left(1 - \rho\right)\mathbf{I}_{d-1};$$
+
+* $\mathbf{V}^*$: Stacked region-covariate design matrix (see manuscript for full definition);
+
+* $\mathbf{W}$: $(d-1) \times (d-1)$ adjacency matrix; $\text{w}_{kk'} = 1$ if regions $k$ and $k'$ share a common border, $\text{w}_{kk} = 0$;
+
+* $\text{w}_{k\cdot} = \sum_{k'=2}^{d} \text{w}_{kk'}$: Number of neighbors of region $k$;
+
+* $\rho \in [0,1)$: Spatial correlation parameter; $\rho = 0$ implies spatial independence;
+
+* $\Omega$: $c(1+p_x) \times c(1+p_x)$ cross-covariance matrix;
+
+* $\boldsymbol{\gamma}^{\top} = \left(\boldsymbol{\gamma}_1^{\top},...,\boldsymbol{\gamma}_{c(1+p_x)}^{\top}\right)$: Region-level covariate coefficients; $\boldsymbol{\gamma}_l^{\top} = \left(\gamma_{l1},...,\gamma_{lp_v}\right)$; $p_v$: Length of region-level covariate vector $\mathbf{v}_k$.
+
+## Prior Information
+$\gamma_{lq} \stackrel{\text{iid}}{\sim} \text{N}\left(0, \sigma^2_{\gamma}\right),\ l=1,...,c(1+p_x);\ q=1,...,p_v.$
+
+* Default setting: $\sigma^2_{\gamma} = 10{,}000.$
+
+$\Omega^{-1} \sim \text{Wishart}\left(\nu_{\Omega},\ \mathbf{S}_{\Omega}^{-1}\right).$
+
+* Default setting: $\nu_{\Omega} = c(1+p_x) + 1$, $\mathbf{S}_{\Omega} = \mathbf{I}_{c(1+p_x)}.$
+
+$\rho \sim \text{Uniform}\left(0, 1\right).$
+
+$\sigma^2_i \stackrel{\text{iid}}{\sim} \text{Inverse-Gamma}\left(a_{\sigma^2}, b_{\sigma^2}\right),\ i=1,...,c.$
+
+* Default setting: $a_{\sigma^2} = 0.01$, $b_{\sigma^2} = 0.01.$
+
+## Default Initial Values
+* $\boldsymbol{\theta}_k = \mathbf{0}_{c(1+p_x)}$ for all $k$;
+
+* $\boldsymbol{\gamma} = \mathbf{0}_{p_v \cdot c(1+p_x)}$;
+
+* $\Omega^{-1} = \mathbf{I}_{c(1+p_x)}$;
+
+* $\rho = 0.50$;
+
+* $\alpha_{ijk} = 0$ for all $i,j,k$;
+
+* $\sigma^2_i = 1.00$ for all $i$.
+
+## Notes
+* MLDM$_0$ omits $\alpha_{ijk}$ and $\sigma^2_i$ from the model; use when $m_{ij} = 1$ for all $i,j$ or as a simplified alternative to MLDM;
+
+* `metrop_sd_rho_trans`: Standard deviation of the Normal proposal for $\rho$ on the logit scale; must be specified by the user and tuned to achieve a reasonable acceptance rate.
+
+## Post-Hoc Functions
+* `p_signal_space_create(beta)`: Computes $\widetilde{p}_{ik} = \exp\{\beta_{ik}\} / \left(1 + \sum_{k'=2}^{d}\exp\{\beta_{ik'}\}\right)$ from posterior samples of `beta`; returns a $c \times d \times T$ array;
+
+* `p_signal_full_create(beta, gamma, v)`: Computes a covariate-adjusted version of $\widetilde{p}_{ik}$ that additionally removes the region-level covariate mean $\mathbf{v}_k^{\top}\boldsymbol{\gamma}_i$ from $\beta_{ik}$ for $k=2,...,d$; returns a $c \times d \times T$ array;
+
+* `psi1_create(p_signal)`: Computes $\psi_{1ik} = \widetilde{p}_{ik} - \frac{1}{c}\sum_{i'=1}^{c}\widetilde{p}_{i'k}$ from a `p_signal` array; returns a $c \times d \times T$ array;
+
+* `psi2_create(p_signal)`: Computes $\psi_{2ik} = \widetilde{p}_{ik} - \frac{1}{d}$ from a `p_signal` array; returns a $c \times d \times T$ array.

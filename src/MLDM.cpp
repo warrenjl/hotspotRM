@@ -1,30 +1,30 @@
 #include "RcppArmadillo.h"
-#include "MLDM.h"
+#include "hotspotRM.h"
 using namespace arma;
 using namespace Rcpp;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::export]]
 
-Rcpp::List MLDM(int mcmc_samples,
-                arma::mat z,
-                arma::vec n,
-                arma::vec m,
-                arma::mat v,
-                arma::mat R,
-                arma::mat x,
-                double metrop_sd_rho_trans,
-                Rcpp::Nullable<double> sigma2_gamma_prior = R_NilValue,
-                Rcpp::Nullable<double> a_sigma2_prior = R_NilValue,
-                Rcpp::Nullable<double> b_sigma2_prior = R_NilValue,
-                Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior = R_NilValue,
-                Rcpp::Nullable<double> Sigma_inv_df_prior = R_NilValue,
-                Rcpp::Nullable<arma::mat> theta_init = R_NilValue,
-                Rcpp::Nullable<arma::mat> gamma_init = R_NilValue,
-                Rcpp::Nullable<arma::mat> alpha_init = R_NilValue,
-                Rcpp::Nullable<arma::vec> sigma2_init = R_NilValue,
-                Rcpp::Nullable<arma::mat> Sigma_inv_init = R_NilValue,
-                Rcpp::Nullable<double> rho_init = R_NilValue){
+Rcpp::List hotspotRM(int mcmc_samples,
+                     arma::mat z,
+                     arma::vec n,
+                     arma::vec m,
+                     arma::mat v,
+                     arma::mat R,
+                     arma::mat x,
+                     double metrop_sd_rho_trans,
+                     Rcpp::Nullable<double> sigma2_gamma_prior = R_NilValue,
+                     Rcpp::Nullable<double> a_sigma2_prior = R_NilValue,
+                     Rcpp::Nullable<double> b_sigma2_prior = R_NilValue,
+                     Rcpp::Nullable<arma::mat> Sigma_inv_scale_prior = R_NilValue,
+                     Rcpp::Nullable<double> Sigma_inv_df_prior = R_NilValue,
+                     Rcpp::Nullable<arma::mat> theta_init = R_NilValue,
+                     Rcpp::Nullable<arma::mat> gamma_init = R_NilValue,
+                     Rcpp::Nullable<arma::mat> alpha_init = R_NilValue,
+                     Rcpp::Nullable<arma::vec> sigma2_init = R_NilValue,
+                     Rcpp::Nullable<arma::mat> Sigma_inv_init = R_NilValue,
+                     Rcpp::Nullable<double> rho_init = R_NilValue){
  
 //Defining Parameters and Quantities of Interest
 arma::mat g = x;
@@ -123,6 +123,9 @@ arma::mat sigma2(c, mcmc_samples); sigma2.fill(0.00);
 arma::cube Sigma_inv((c*(1 + p_g)), (c*(1 + p_g)), mcmc_samples); Sigma_inv.fill(0.00);
 arma::vec rho(mcmc_samples); rho.fill(0.00);
 arma::mat omega(sum_n, (d-1)); omega.fill(0.00);
+arma::cube p_signal(c, d, mcmc_samples); p_signal.fill(0.00);
+arma::cube psi_1(c, d, mcmc_samples); psi_1.fill(0.00);
+arma::cube psi_2(c, d, mcmc_samples); psi_2.fill(0.00);
 
 //Prior Information
 double sigma2_gamma = 10000.00;
@@ -211,6 +214,17 @@ arma::mat Q = rho(0)*Q_piece +
 double log_deter = 0.00; 
 double sign = 0.00;     
 log_det(log_deter, sign, Q);
+
+//p_signal
+arma::vec denom = exp(beta.slice(0).col(0));
+for(int j = 1; j < (d-1); ++j){
+   denom = denom +
+           exp(beta.slice(0).col(j));
+   }
+p_signal.slice(0).col(0) = 1.00/(1.00 + denom);
+for(int j = 0; j < (d-1); ++j){
+   p_signal.slice(0).col(j+1) = exp(beta.slice(0).col(j))/(1.00 + denom);
+   }
 
 //Metropolis Settings
 int acctot_rho_trans = 1;
@@ -364,6 +378,25 @@ for(int j = 1; j < mcmc_samples; ++j){
      delta.slice(j) = theta.slice(j).rows(c, (c*(1 + p_g) - 1));
      }
    
+   //p_signal
+   arma::vec denom = exp(beta.slice(j).col(0));
+   for(int k = 1; k < (d-1); ++k){
+      denom = denom +
+              exp(beta.slice(j).col(k));
+      }
+   p_signal.slice(j).col(0) = 1.00/(1.00 + denom);
+   for(int k = 0; k < (d-1); ++k){
+      p_signal.slice(j).col(k+1) = exp(beta.slice(j).col(k))/(1.00 + denom);
+      }
+   
+   //psi_1 
+   arma::rowvec group_avg = arma::mean(p_signal.slice(j), 0); 
+   psi_1.slice(j) = p_signal.slice(j) - arma::repmat(group_avg, c, 1);
+   
+   //psi_2 
+   arma::vec region_avg = arma::mean(p_signal.slice(j), 1);    
+   psi_2.slice(j) = p_signal.slice(j) - arma::repmat(region_avg, 1, d);
+   
    //Progress
    if((j + 1) % 10 == 0){ 
      Rcpp::checkUserInterrupt();
@@ -389,6 +422,9 @@ for(int j = 1; j < mcmc_samples; ++j){
                              Rcpp::Named("sigma2") = sigma2,
                              Rcpp::Named("Sigma_inv") = Sigma_inv,
                              Rcpp::Named("rho") = rho,
+                             Rcpp::Named("p_signal") = p_signal,
+                             Rcpp::Named("psi_1") = psi_1,
+                             Rcpp::Named("psi_2") = psi_2,
                              Rcpp::Named("acctot_rho_trans") = acctot_rho_trans);
   
    }
